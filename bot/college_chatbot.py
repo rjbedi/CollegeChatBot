@@ -6,7 +6,7 @@ import re
 
 QUESTIONS_FILE = "chatbot_questions.json"
 
-# Default questions and answers
+#Questions and answers
 DEFAULT_QA = {
     "hello": "Hello! I'm your Team Intel's chatbot. How can I help you today?",
     "hi": "Hi there! Welcome to our Team Intel's chatbot. What would you like to know?",
@@ -45,21 +45,17 @@ def get_response(user_input, questions):
     """Get response based on user input"""
     user_input = user_input.lower().strip()
     
-    # Direct match
     if user_input in questions:
         return questions[user_input]
     
-    # Partial match
     for question, answer in questions.items():
         if question in user_input or user_input in question:
             return answer
     
-    # Keyword matching
     for question, answer in questions.items():
         question_words = question.split()
         user_words = user_input.split()
         
-        # Check if any word from user input matches question words
         if any(word in question_words for word in user_words):
             return answer
     
@@ -187,7 +183,6 @@ def chatbot_page():
     """Main chatbot interface"""
     st.markdown("### 💬 Chat with our College Bot")
     
-    # Welcome message if no chat history
     if not st.session_state.chat_history:
         st.markdown("""
         <div class='welcome-message'>
@@ -196,7 +191,6 @@ def chatbot_page():
         </div>
         """, unsafe_allow_html=True)
     
-    # Display chat history
     if st.session_state.chat_history:
         st.markdown("#### 💬 Chat History")
         with st.container():
@@ -218,18 +212,13 @@ def chatbot_page():
             st.markdown("<br>", unsafe_allow_html=True)  # Add spacing
             send_button = st.button("Send 📤", type="primary")
     
-    # Process user input
     if send_button and user_input:
-        # Get bot response
         bot_response = get_response(user_input, st.session_state.questions)
         
-        # Add to chat history
         st.session_state.chat_history.append((user_input, bot_response))
         
-        # Rerun to update the display
         st.rerun()
     
-    # Quick action buttons
     st.markdown("#### 🚀 Quick Questions")
     st.markdown("""
     <div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
@@ -299,7 +288,6 @@ def admin_panel():
     st.markdown("<div class='admin-section'>", unsafe_allow_html=True)
     st.markdown("### 🔧 Admin Panel - Manage Questions & Answers")
     
-    # Password protection
     if 'admin_authenticated' not in st.session_state:
         st.session_state.admin_authenticated = False
     
@@ -339,11 +327,9 @@ def admin_panel():
         else:
             st.error("Please fill in both question and answer fields.")
     
-    # Display and manage existing questions
     st.markdown("#### Existing Questions & Answers")
     
     if st.session_state.questions:
-        # Search functionality
         search_term = st.text_input("Search questions:", placeholder="Search existing questions...")
         
         questions_to_show = st.session_state.questions
@@ -351,12 +337,10 @@ def admin_panel():
             questions_to_show = {k: v for k, v in st.session_state.questions.items() 
                                 if search_term.lower() in k.lower() or search_term.lower() in v.lower()}
         
-        # Display questions in a more organized way
         for i, (question, answer) in enumerate(questions_to_show.items()):
             with st.expander(f"Q: {question.title()}"):
                 st.write(f"**Answer:** {answer}")
                 
-                # Edit functionality
                 col1, col2, col3 = st.columns([2, 2, 1])
                 
                 with col1:
@@ -366,7 +350,7 @@ def admin_panel():
                     new_a = st.text_area(f"Edit answer:", value=answer, key=f"edit_a_{i}")
                 
                 with col3:
-                    st.write("")  # Spacer
+                    st.write("")  
                     if st.button("Update", key=f"update_{i}"):
                         if new_q and new_a:
                             # Remove old question
@@ -475,8 +459,7 @@ def about_page():
     """)
     
     st.markdown("---")
-    st.markdown("**Created for College Project** 🎓")
-    st.markdown("*Feel free to customize and extend this chatbot for your specific needs!*")
+    st.markdown("**Created for Intel AI Internship Project** 🎓")
 
 if __name__ == "__main__":
     main()
