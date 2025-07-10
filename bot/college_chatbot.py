@@ -415,7 +415,7 @@ def about_page():
     st.markdown("### 📚 About This Chatbot")
     
     st.markdown("""
-    This is a Team Intel's chatbot created by Shruti Chawla [23BCA10625] & Manmeet Singh [23BCA10805]. Here are its features:
+    This is a Python's chatbot created by Rajnish Bedi. Here are its features:
     
     **Features:**
     - Interactive chat interface
@@ -459,7 +459,6 @@ def about_page():
     """)
     
     st.markdown("---")
-    st.markdown("**Created for Intel AI Internship Project** 🎓")
 
 if __name__ == "__main__":
     main()
